@@ -1,0 +1,5 @@
+1:"$Sreact.fragment"
+2:I[84949,["/_next/static/chunks/0o-atciuueian.js"],"OutletBoundary"]
+3:"$Sreact.suspense"
+0:{"rsc":["$","$1","c",{"children":[["$","main",null,{"className":"min-h-screen bg-black text-white px-6 py-20","children":["$","div",null,{"className":"max-w-3xl mx-auto","children":[["$","h1",null,{"className":"text-5xl font-bold mb-10","children":"Privacy Policy"}],["$","div",null,{"className":"space-y-6 text-gray-300","children":[["$","p",null,{"children":"We respect your privacy and protect your personal data."}],["$","p",null,{"children":"Viral Hook AI currently does not sell or share your personal information."}],["$","p",null,{"children":"Generated hooks may be stored temporarily to improve the user experience."}],["$","p",null,{"children":"If you have questions, contact us anytime."}]]}]]}]}],null,["$","$L2",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@4"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"nyiOZ-zaqGYlEUxbyjDhh"}
+4:null

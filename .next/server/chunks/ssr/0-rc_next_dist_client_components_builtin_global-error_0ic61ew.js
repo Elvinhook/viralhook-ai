@@ -1,0 +1,3 @@
+module.exports=[22189,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(28805);a.n(d("[project]/tiktok-hook-ai/node_modules/next/dist/client/components/builtin/global-error.js <module evaluation>"))},37221,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(28805);a.n(d("[project]/tiktok-hook-ai/node_modules/next/dist/client/components/builtin/global-error.js"))},33630,a=>{"use strict";a.i(22189);var b=a.i(37221);a.n(b)},32561,a=>{a.n(a.i(33630))}];
+
+//# sourceMappingURL=0-rc_next_dist_client_components_builtin_global-error_0ic61ew.js.map

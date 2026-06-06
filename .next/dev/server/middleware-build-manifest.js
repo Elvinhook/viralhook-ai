@@ -1,0 +1,26 @@
+globalThis.__BUILD_MANIFEST = {
+  "pages": {
+    "/_app": []
+  },
+  "devFiles": [],
+  "polyfillFiles": [
+    "static/chunks/0-rc_next_dist_build_polyfills_polyfill-nomodule.js"
+  ],
+  "lowPriorityFiles": [
+    "static/development/_buildManifest.js",
+    "static/development/_ssgManifest.js",
+    "static/development/_clientMiddlewareManifest.js"
+  ],
+  "rootMainFiles": [
+    "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_0u5.rr_._.js",
+    "static/chunks/0-rc_next_dist_compiled_next-devtools_index_0vuk3z2.js",
+    "static/chunks/0-rc_next_dist_compiled_react-dom_0dft9qz._.js",
+    "static/chunks/0-rc_next_dist_compiled_react-server-dom-turbopack_0v8f9nn._.js",
+    "static/chunks/0-rc_next_dist_compiled_0slav_n._.js",
+    "static/chunks/0-rc_next_dist_client_0mh-qsp._.js",
+    "static/chunks/0-rc_next_dist_10r1mxu._.js",
+    "static/chunks/0-rc_@swc_helpers_cjs_01pg.iu._.js",
+    "static/chunks/tiktok-hook-ai_0rqeker._.js",
+    "static/chunks/turbopack-tiktok-hook-ai_07v26jv._.js"
+  ]
+};

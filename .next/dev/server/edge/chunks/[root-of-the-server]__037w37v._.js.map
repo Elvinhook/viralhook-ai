@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 16, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/tiktok-hook-ai/middleware.ts"],"sourcesContent":["export function middleware() {}"],"names":["middleware"],"mappings":";;;;AAAO,SAASA,cAAc"}}]
+}
