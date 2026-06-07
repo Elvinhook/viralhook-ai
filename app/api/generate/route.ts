@@ -45,6 +45,30 @@ Rules:
 - Never explain
 - No hashtags
 - No emojis
+Avoid generic hooks.
+
+Never use:
+- Die Wahrheit über...
+- Das Geheimnis hinter...
+- Was niemand dir sagt...
+- Warum du...
+more than once.
+
+Hooks must sound like top-performing TikTok creators.
+
+Create tension, curiosity and emotion.
+
+Bad:
+Die Wahrheit über Hautpflege, die niemand hören will
+
+Good:
+Diese eine Gewohnheit lässt deine Haut täglich altern
+
+Bad:
+Warum 99% aller Routinen fehlerhaft sind
+
+Good:
+Ich habe 3 Jahre Hautpflege falsch gemacht
 - Every hook must use a different structure 
 - Never repeat the same opening pattern 
 - Generate a mix of curiosity, fear, authority, controversy, and surprise hooks
