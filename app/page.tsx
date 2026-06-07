@@ -1,7 +1,7 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
-
 
 export default function Home() {
   const [topic, setTopic] = useState("");
@@ -36,43 +36,8 @@ export default function Home() {
       setUser(session?.user ?? null);
     });
 
-    return() => subscription.unsubscribe();
+    return () => subscription.unsubscribe();
   }, []);
-
-  useEffect(() => {
-    const loadSavedHooks = async () => {
-      if (!user) {
-        setSavedHooks([]);
-        return;
-      }
-  
-      const { data, error } = await supabase
-        .from("hooks")
-        .select("hook")
-        .eq("user_id", user.id)
-        .order("created_at", { ascending: false });
-  
-      if (error) {
-        console.log("LOAD ERROR:", error);
-        return;
-      }
-  
-    setSavedHooks(data?.map((item: any) => item.hook) || []);
-    
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("plan")
-      .eq("id", user.id)
-      .single();
-
-if (profile) {
-  setPlan(profile.plan);
-}
-};
-  
-    loadSavedHooks();
-  
-  }, [user]);
 
   useEffect(() => {
     const loadUserData = async () => {
@@ -81,110 +46,104 @@ if (profile) {
         setPlan("free");
         return;
       }
-  
-      const { data: profile, error: profileError } = await supabase
+
+      const { data: profile } = await supabase
         .from("profiles")
         .select("plan")
         .eq("id", user.id)
         .maybeSingle();
-  
-      console.log("USER ID:", user.id);
-      console.log("PROFILE:", profile);
-      console.log("PROFILE ERROR:", profileError);
-  
+
       if (profile?.plan) {
         setPlan(profile.plan);
       }
-  
+
       const { data, error } = await supabase
         .from("hooks")
         .select("hook")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false });
-  
+
       if (!error) {
         setSavedHooks(data?.map((item: any) => item.hook) || []);
       }
     };
-  
+
     loadUserData();
   }, [user]);
-  
-  const handleAuth = async () => { 
-    if (authMode === "signup") { 
-     const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
 
-    if (error) { 
-      alert(error.message);
-      return;
+  const handleAuth = async () => {
+    if (authMode === "signup") {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+
+      if (error) {
+        alert(error.message);
+        return;
+      }
+
+      if (data.user) {
+        await supabase.from("profiles").insert([
+          {
+            id: data.user.id,
+            email: data.user.email,
+            plan: "free",
+          },
+        ]);
+      }
+
+      alert("Account erstellt!");
+    } else {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        alert(error.message);
+        return;
+      }
+
+      setUser(data.user);
     }
+  };
 
-    if (data.user) {
-      await supabase.from("profiles").insert([
-        {
-          id: data.user.id,
-          email: data.user.email,
-          plan: "free",
-        },
-      ]);
-    }
-
-    alert("Account erstellt!");
-  
-  } else {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
-      alert(error.message);
-      return;
-    }
-
-    setUser(data.user);
-  }
-};
-  
   const generateHooks = async () => {
     if (!topic) {
       alert("Bitte Thema eingeben");
       return;
     }
-  
-    setLoading(true);
 
     if (!user) {
       alert("Bitte zuerst einloggen");
-      setLoading(false);
       return;
     }
-    
+
+    setLoading(true);
+
     if (plan !== "pro") {
       const today = new Date().toISOString().split("T")[0];
-    
+
       const { count, error } = await supabase
         .from("usage_logs")
         .select("*", { count: "exact", head: true })
         .eq("user_id", user.id)
         .gte("created_at", `${today}T00:00:00.000Z`);
-    
+
       if (error) {
         console.log("USAGE ERROR:", error);
         setLoading(false);
         return;
       }
-    
+
       if ((count || 0) >= 5) {
         alert("Free Limit erreicht. Upgrade auf Pro für unbegrenzte Hooks.");
         setLoading(false);
         return;
       }
     }
-  
+
     try {
       const response = await fetch("/api/generate", {
         method: "POST",
@@ -200,14 +159,14 @@ if (profile) {
           filter: hookFilter,
         }),
       });
-  
+
       const data = await response.json();
-  
+
       const generatedHooks = data.result
         .split("\n")
         .map((hook: string) => hook.replace(/^\d+[\).\s-]*/, "").trim())
         .filter((hook: string) => hook.length > 0);
-  
+
       setHooks(generatedHooks);
       setHookHistory([generatedHooks, ...hookHistory]);
 
@@ -218,17 +177,15 @@ if (profile) {
           },
         ]);
       }
-    
     } catch (error) {
       alert("Fehler beim Generieren der Hooks.");
     }
-  
+
     setLoading(false);
   };
 
   const copyHook = async (hook: string) => {
     await navigator.clipboard.writeText(hook);
-
     setCopied(hook);
 
     setTimeout(() => {
@@ -242,62 +199,49 @@ if (profile) {
       return;
     }
 
-    console.log("SAVE BUTTON GEKLICKT:", hook);
-    
     if (!savedHooks.includes(hook)) {
       const updatedHooks = [...savedHooks, hook];
-    
       setSavedHooks(updatedHooks);
 
-      const { data, error } = await supabase
-      .from("hooks")
-      .insert([
+      await supabase.from("hooks").insert([
         {
-          hook: hook,
+          hook,
           user_id: user.id,
         },
-      ])
-      .select();
-    
-    console.log("SAVE DATA:", data);
-    console.log("SAVE ERROR:", error);
-    console.log("USER ID:", user.id);
-    
-      localStorage.setItem(
-        "savedHooks",
-        JSON.stringify(updatedHooks)
-      );
+      ]);
     }
   };
 
   const deleteHook = async (hookToDelete: string) => {
+    if (!user) return;
+
     const { error } = await supabase
       .from("hooks")
       .delete()
       .eq("hook", hookToDelete)
-      .eq("user_id", user!.id); 
-  
+      .eq("user_id", user.id);
+
     if (error) {
       console.log("DELETE ERROR:", error);
       return;
     }
-  
-    setSavedHooks(
-      savedHooks.filter((hook) => hook !== hookToDelete)
-    );
+
+    setSavedHooks(savedHooks.filter((hook) => hook !== hookToDelete));
   };
 
   const clearAllHooks = async () => {
+    if (!user) return;
+
     const { error } = await supabase
       .from("hooks")
       .delete()
-      .neq("id", 0);
-  
+      .eq("user_id", user.id);
+
     if (error) {
       console.log(error);
       return;
     }
-  
+
     setSavedHooks([]);
   };
 
@@ -308,18 +252,12 @@ if (profile) {
     }
 
     const text = savedHooks.join("\n\n");
-
-    const blob = new Blob([text], {
-      type: "text/plain",
-    });
-
+    const blob = new Blob([text], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
-
     const a = document.createElement("a");
 
     a.href = url;
     a.download = "saved-hooks.txt";
-
     a.click();
 
     URL.revokeObjectURL(url);
@@ -341,132 +279,128 @@ if (profile) {
           : "bg-gradient-to-br from-white via-gray-100 to-gray-200 text-black"
       }`}
     >
+      {!user && (
+        <div className="max-w-md mx-auto mb-12 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 shadow-2xl">
+          <div className="text-center mb-6">
+            <div className="text-4xl mb-3">🚀</div>
+            <h2 className="text-3xl font-bold">
+              {authMode === "login" ? "Willkommen zurück" : "Account erstellen"}
+            </h2>
+            <p className="text-gray-400 mt-2 text-sm">
+              Speichere deine besten Hooks sicher in deinem Account.
+            </p>
+          </div>
 
-{!user && (
-  <div className="max-w-md mx-auto mb-12 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 shadow-2xl">
-    <div className="text-center mb-6">
-      <div className="text-4xl mb-3">🚀</div>
-      <h2 className="text-3xl font-bold">
-        {authMode === "login" ? "Willkommen zurück" : "Account erstellen"}
-      </h2>
-      <p className="text-gray-400 mt-2 text-sm">
-        Speichere deine besten Hooks sicher in deinem Account.
-      </p>
-    </div>
+          <input
+            type="email"
+            placeholder="E-Mail-Adresse"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full mb-3 px-4 py-3 rounded-2xl bg-black/40 border border-white/10 text-white outline-none focus:border-pink-500"
+          />
 
-    <input
-      type="email"
-      placeholder="E-Mail-Adresse"
-      value={email}
-      onChange={(e) => setEmail(e.target.value)}
-      className="w-full mb-3 px-4 py-3 rounded-2xl bg-black/40 border border-white/10 text-white outline-none focus:border-pink-500"
-    />
+          <input
+            type="password"
+            placeholder="Passwort"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full mb-5 px-4 py-3 rounded-2xl bg-black/40 border border-white/10 text-white outline-none focus:border-pink-500"
+          />
 
-    <input
-      type="password"
-      placeholder="Passwort"
-      value={password}
-      onChange={(e) => setPassword(e.target.value)}
-      className="w-full mb-5 px-4 py-3 rounded-2xl bg-black/40 border border-white/10 text-white outline-none focus:border-pink-500"
-    />
+          <button
+            onClick={handleAuth}
+            className="w-full py-3 rounded-2xl font-bold text-white bg-gradient-to-r from-pink-500 to-orange-500 hover:scale-[1.02] transition"
+          >
+            {authMode === "login" ? "Einloggen" : "Kostenlos registrieren"}
+          </button>
 
-    <button
-      onClick={handleAuth}
-      className="w-full py-3 rounded-2xl font-bold text-white bg-gradient-to-r from-pink-500 to-orange-500 hover:scale-[1.02] transition"
-    >
-      {authMode === "login" ? "Einloggen" : "Kostenlos registrieren"}
-    </button>
+          <button
+            onClick={() =>
+              setAuthMode(authMode === "login" ? "signup" : "login")
+            }
+            className="w-full mt-4 text-sm text-gray-300 hover:text-white underline"
+          >
+            {authMode === "login"
+              ? "Noch keinen Account? Jetzt registrieren"
+              : "Schon einen Account? Einloggen"}
+          </button>
+        </div>
+      )}
 
-    <button
-      onClick={() => setAuthMode(authMode === "login" ? "signup" : "login")}
-      className="w-full mt-4 text-sm text-gray-300 hover:text-white underline"
-    >
-      {authMode === "login"
-        ? "Noch keinen Account? Jetzt registrieren"
-        : "Schon einen Account? Einloggen"}
-    </button>
-  </div>
-)}
+      {user && (
+        <div className="max-w-md mx-auto mb-10">
+          <div className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 text-center shadow-xl">
+            <div className="text-4xl mb-3">👋</div>
 
-{user && (
-  <div className="max-w-md mx-auto mb-10">
-    <div className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 text-center shadow-xl">
-      <div className="text-4xl mb-3">👋</div>
+            <h3 className="text-xl font-bold mb-2">Willkommen zurück</h3>
 
-      <h3 className="text-xl font-bold mb-2">
-        Willkommen zurück
-      </h3>
+            <p className="text-gray-400 text-sm mb-5 break-all">
+              {user.email}
+            </p>
 
-      <p className="text-gray-400 text-sm mb-5 break-all">
-        {user.email}
-      </p>
+            <p className="text-pink-400 font-bold mb-4">
+              {plan === "pro" ? "PRO 🚀" : "FREE"}
+            </p>
 
-      <p className="text-pink-400 font-bold mb-4">
-        {plan === "pro" ? "PRO 🚀" : "FREE"}
-      </p>
+            <div className="flex flex-col items-center gap-3">
+              <button
+                onClick={async () => {
+                  await supabase.auth.signOut();
+                  setUser(null);
+                }}
+                className="bg-gradient-to-r from-red-500 to-orange-500 text-white px-6 py-3 rounded-2xl font-semibold hover:scale-105 transition"
+              >
+                Logout
+              </button>
 
-      <button
-  onClick={async () => {
-    await supabase.auth.signOut();
-    setUser(null);
-  }}
-  className="bg-gradient-to-r from-red-500 to-orange-500 text-white px-6 py-3 rounded-2xl font-semibold hover:scale-105 transition"
->
-  Logout
-</button>
+              {plan === "pro" ? (
+                <div className="text-green-400 font-bold">
+                  ✅ Pro Mitglied aktiv
+                </div>
+              ) : (
+                <button
+                  onClick={async () => {
+                    const response = await fetch(
+                      "/api/create-checkout-session",
+                      {
+                        method: "POST",
+                        headers: {
+                          "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                          userId: user.id,
+                          email: user.email,
+                        }),
+                      }
+                    );
 
-      <button
-  onClick={async () => {
-    const response = await fetch("/api/create-checkout-session", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userId: user.id,
-        email: user.email,
-      }),
-    });
+                    const data = await response.json();
 
-    const text = await response.text();
-console.log("CHECKOUT RESPONSE:", text);
+                    if (data.url) {
+                      window.location.href = data.url;
+                    }
+                  }}
+                  className="bg-gradient-to-r from-pink-500 to-orange-500 text-white px-6 py-3 rounded-2xl font-semibold hover:scale-105 transition"
+                >
+                  Upgrade to Pro 🚀
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
-const data = JSON.parse(text);
+      <div className="max-w-5xl mx-auto flex justify-end items-center gap-4">
+        <button
+          onClick={() => setDarkMode(!darkMode)}
+          className={`px-5 py-2 rounded-xl font-semibold transition hover:scale-105 ${
+            darkMode ? "bg-white text-black" : "bg-black text-white"
+          }`}
+        >
+          {darkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
+        </button>
+      </div>
 
-    if (data.url) {
-      window.location.href = data.url;
-    }
-  }}
-  className="mt-3 bg-gradient-to-r from-pink-500 to-orange-500 text-white px-6 py-3 rounded-2xl font-semibold hover:scale-105 transition"
->
-  Upgrade to Pro 🚀
-</button>
-    
-    </div>
-  </div>
-)}
-
-
-     
-     {/* TOP BAR */}
-<div className="max-w-5xl mx-auto flex justify-end items-center gap-4">
-  
-    
-
-  
-  
-
-  <button
-    onClick={() => setDarkMode(!darkMode)}
-    className={`px-5 py-2 rounded-xl font-semibold transition hover:scale-105 ${
-      darkMode ? "bg-white text-black" : "bg-black text-white"
-    }`}
-  >
-    {darkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
-  </button>
-</div>
-
-      {/* HERO */}
       <section className="max-w-5xl mx-auto text-center pt-16">
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/10 text-sm mb-6 shadow-lg">
           🚀 Viral Hooks for Creators
@@ -485,7 +419,6 @@ const data = JSON.parse(text);
           seconds.
         </p>
 
-        {/* GENERATOR */}
         <div
           className={`border rounded-3xl p-6 md:p-8 shadow-2xl max-w-2xl mx-auto transition hover:scale-[1.01] ${cardStyle}`}
         >
@@ -565,7 +498,6 @@ const data = JSON.parse(text);
         </div>
       </section>
 
-      {/* GENERATED HOOKS */}
       {hooks.length > 0 && (
         <section className="max-w-4xl mx-auto mt-14">
           <h2 className="text-3xl font-bold mb-6 text-center">
@@ -607,7 +539,6 @@ const data = JSON.parse(text);
         </section>
       )}
 
-      {/* TRENDING HOOKS */}
       <section className="max-w-4xl mx-auto mt-20">
         <h2 className="text-3xl font-bold mb-6 text-center">
           Trending Hooks 🔥
@@ -632,61 +563,59 @@ const data = JSON.parse(text);
         </div>
       </section>
 
-      {/* SAVED HOOKS */}
-<section className="max-w-4xl mx-auto mt-20">
-  <div className={`border rounded-3xl p-6 shadow-2xl ${cardStyle}`}>
-    <div className="flex flex-col sm:flex-row justify-between gap-4 items-start sm:items-center mb-6">
-      <div>
-        <h2 className="text-3xl font-bold">Saved Hooks ❤️</h2>
-        <p className="text-gray-400 text-sm mt-1">
-          {savedHooks.length} gespeicherte Hooks
-        </p>
-      </div>
+      <section className="max-w-4xl mx-auto mt-20">
+        <div className={`border rounded-3xl p-6 shadow-2xl ${cardStyle}`}>
+          <div className="flex flex-col sm:flex-row justify-between gap-4 items-start sm:items-center mb-6">
+            <div>
+              <h2 className="text-3xl font-bold">Saved Hooks ❤️</h2>
+              <p className="text-gray-400 text-sm mt-1">
+                {savedHooks.length} gespeicherte Hooks
+              </p>
+            </div>
 
-      <div className="flex flex-col sm:flex-row gap-3">
-        <button
-          onClick={downloadSavedHooks}
-          className="bg-white text-black px-5 py-2 rounded-xl font-semibold hover:scale-105 transition"
-        >
-          Download
-        </button>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button
+                onClick={downloadSavedHooks}
+                className="bg-white text-black px-5 py-2 rounded-xl font-semibold hover:scale-105 transition"
+              >
+                Download
+              </button>
 
-        <button
-          onClick={clearAllHooks}
-          className="bg-red-500 text-white px-5 py-2 rounded-xl font-semibold hover:scale-105 transition"
-        >
-          Clear All
-        </button>
-      </div>
-    </div>
-
-    {savedHooks.length === 0 ? (
-      <div className="text-center py-10 text-gray-400">
-        Noch keine Hooks gespeichert.
-      </div>
-    ) : (
-      <div className="grid gap-4">
-        {savedHooks.map((hook, index) => (
-          <div
-            key={index}
-            className="rounded-2xl border border-white/10 bg-black/30 p-5 flex flex-col sm:flex-row justify-between gap-4"
-          >
-            <p className="text-lg">{hook}</p>
-
-            <button
-              onClick={() => deleteHook(hook)}
-              className="bg-red-500 text-white px-4 py-2 rounded-xl font-semibold hover:scale-105 transition"
-            >
-              Delete
-            </button>
+              <button
+                onClick={clearAllHooks}
+                className="bg-red-500 text-white px-5 py-2 rounded-xl font-semibold hover:scale-105 transition"
+              >
+                Clear All
+              </button>
+            </div>
           </div>
-        ))}
-      </div>
-    )}
-  </div>
-</section>
 
-      {/* HOOK HISTORY */}
+          {savedHooks.length === 0 ? (
+            <div className="text-center py-10 text-gray-400">
+              Noch keine Hooks gespeichert.
+            </div>
+          ) : (
+            <div className="grid gap-4">
+              {savedHooks.map((hook, index) => (
+                <div
+                  key={index}
+                  className="rounded-2xl border border-white/10 bg-black/30 p-5 flex flex-col sm:flex-row justify-between gap-4"
+                >
+                  <p className="text-lg">{hook}</p>
+
+                  <button
+                    onClick={() => deleteHook(hook)}
+                    className="bg-red-500 text-white px-4 py-2 rounded-xl font-semibold hover:scale-105 transition"
+                  >
+                    Delete
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
       {hookHistory.length > 0 && (
         <section className="max-w-4xl mx-auto mt-20">
           <h2 className="text-3xl font-bold mb-6 text-center">
@@ -714,7 +643,6 @@ const data = JSON.parse(text);
         </section>
       )}
 
-      {/* FOOTER */}
       <footer className="max-w-5xl mx-auto mt-24 border-t border-zinc-800 pt-10 pb-6 text-center text-gray-400">
         <h3 className="text-2xl font-bold mb-3 text-white">
           Viral Hook AI 🚀
@@ -743,7 +671,7 @@ const data = JSON.parse(text);
         </div>
 
         <p className="text-sm opacity-70">
-          © 2026 Viral Hook AI. All rights reserved.
+          ©️ 2026 Viral Hook AI. All rights reserved.
         </p>
       </footer>
     </main>
