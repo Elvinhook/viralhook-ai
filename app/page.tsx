@@ -75,21 +75,40 @@ if (profile) {
   }, [user]);
 
   useEffect(() => {
-    const refreshProfileAfterPayment = async () => {
-      if (!user) return;
+    const loadUserData = async () => {
+      if (!user) {
+        setSavedHooks([]);
+        setPlan("free");
+        return;
+      }
   
-      if (window.location.search.includes("success=true")) {
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("plan")
-          .eq("id", user.id)
-          .single();
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("plan")
+        .eq("id", user.id)
+        .maybeSingle();
   
-        if (profile) {
-          setPlan(profile.plan);
-        }
+      console.log("USER ID:", user.id);
+      console.log("PROFILE:", profile);
+      console.log("PROFILE ERROR:", profileError);
+  
+      if (profile?.plan) {
+        setPlan(profile.plan);
+      }
+  
+      const { data, error } = await supabase
+        .from("hooks")
+        .select("hook")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+  
+      if (!error) {
+        setSavedHooks(data?.map((item: any) => item.hook) || []);
       }
     };
+  
+    loadUserData();
+  }, [user]);
   
     refreshProfileAfterPayment();
   }, [user]);
