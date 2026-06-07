@@ -175,10 +175,14 @@ export default function Home() {
 
       const data = await response.json();
 
-      const generatedHooks = data.result
-        .split("\n")
-        .map((hook: string) => hook.replace(/^\d+[\).\s-]*/, "").trim())
-        .filter((hook: string) => hook.length > 0);
+      const generatedHooks: string[] = Array.from(
+        new Set<string>(
+          data.result
+            .split("\n")
+            .map((hook: string) => hook.replace(/^\d+[\).\s-]*/, "").trim())
+            .filter((hook: string) => hook.length > 0)
+        )
+      );
 
       setHooks(generatedHooks);
       setHookHistory([generatedHooks, ...hookHistory]);

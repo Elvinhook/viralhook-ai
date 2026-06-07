@@ -7,10 +7,26 @@ export async function POST(req: Request) {
 
     const hookCount = body.plan ==="pro" ? 50 : 10;
 
+    const proRules =
+  body.plan === "pro"
+    ? `
+Pro quality rules:
+- Use stronger curiosity gaps
+- Use more emotional tension
+- Use more controversy
+- Avoid weak generic hooks
+- Every hook must feel different
+- Make them sound like high-performing viral short-form content
+`
+    : "";
+
     const prompt = `
     You are the world's best viral hook writer.
 
-Generate ${hookCount} viral hooks.
+Generate ${hookCount} highly viral hooks.
+
+if plan is pro, make the hooks stronger, more unique and more advanced.
+Hooks must sound like top TikTok, Instagram Reels and YouTube Shorts creators.
 
 Topic: ${body.topic}
 Platform: ${body.platform}
@@ -29,6 +45,12 @@ Rules:
 - Never explain
 - No hashtags
 - No emojis
+- Every hook must use a different structure 
+- Never repeat the same opening pattern 
+- Generate a mix of curiosity, fear, authority, controversy, and surprise hooks
+- Avoid generic phrases 
+- Each hook must feel unique 
+${proRules}
 
 Good hooks:
 - Warum 90% aller Hundebesitzer Aggression verschlimmern
@@ -36,6 +58,16 @@ Good hooks:
 - Was Hundetrainer dir über Aggression verschweigen
 - Die Wahrheit über Hundetraining, die niemand hören will
 - Dieser Fehler zerstört jede Beziehung zu deinem Hund
+- Niemand spricht über diesen Fehler
+- Das würde dir kein Experte freiwillig sagen
+- Ich habe das jahrelang falsch gemacht
+- Der wahre Grund überrascht die meisten
+- Die meisten Menschen merken das zu spät
+- Diese Gewohnheit zerstört deine Ergebnisse
+- Warum fast alle hier scheitern
+- Das passiert, wenn du damit aufhörst
+- Der Fehler kostet dich mehr als du denkst
+- Ich wünschte, ich hätte das früher gewusst
 
 Return only a numbered list.
     `;
