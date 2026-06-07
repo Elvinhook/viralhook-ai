@@ -74,6 +74,26 @@ if (profile) {
   
   }, [user]);
 
+  useEffect(() => {
+    const refreshProfileAfterPayment = async () => {
+      if (!user) return;
+  
+      if (window.location.search.includes("success=true")) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("plan")
+          .eq("id", user.id)
+          .single();
+  
+        if (profile) {
+          setPlan(profile.plan);
+        }
+      }
+    };
+  
+    refreshProfileAfterPayment();
+  }, [user]);
+
   const handleAuth = async () => { 
     if (authMode === "signup") { 
      const { data, error } = await supabase.auth.signUp({
