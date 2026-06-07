@@ -5,10 +5,12 @@ export async function POST(req: Request) {
     console.log("GROQ KEY:", process.env.GROQ_API_KEY);
     const body = await req.json();
 
+    const hookCount = body.plan ==="pro" ? 50 : 10;
+
     const prompt = `
     You are the world's best viral hook writer.
 
-Generate 10 viral hooks.
+Generate ${hookCount} viral hooks.
 
 Topic: ${body.topic}
 Platform: ${body.platform}
