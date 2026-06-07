@@ -44,6 +44,10 @@ export default function Home() {
   useEffect(() => {
     if (window.location.search.includes("success=true")) {
       setPaymentSuccess(true);
+  
+      setTimeout(() => {
+        setPaymentSuccess(false);
+      }, 5000);
     }
   }, []);
 
