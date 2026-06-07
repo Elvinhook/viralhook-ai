@@ -25,6 +25,8 @@ export default function Home() {
   const [plan, setPlan] = useState("free");
   const [authMode, setAuthMode] = useState<"login" | "signup">("login");
 
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
+
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
       setUser(data.user);
@@ -37,6 +39,12 @@ export default function Home() {
     });
 
     return () => subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (window.location.search.includes("success=true")) {
+      setPaymentSuccess(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -279,6 +287,13 @@ export default function Home() {
           : "bg-gradient-to-br from-white via-gray-100 to-gray-200 text-black"
       }`}
     >
+
+{paymentSuccess && (
+  <div className="max-w-4xl mx-auto mb-6 bg-green-500/20 border border-green-500 text-green-300 p-4 rounded-2xl text-center font-bold">
+    ✅ Zahlung erfolgreich! Dein Pro Account wurde aktiviert.
+  </div>
+)}
+      
       {!user && (
         <div className="max-w-md mx-auto mb-12 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 shadow-2xl">
           <div className="text-center mb-6">
