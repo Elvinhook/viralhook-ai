@@ -52,6 +52,24 @@ Rules:
 - Each hook must feel unique 
 ${proRules}
 
+Every hook must use a different angle.
+
+Use these hook types:
+1. Curiosity
+2. Secret
+3. Mistake
+4. Warning
+5. Contrarian
+6. Shocking fact
+7. Myth busting
+8. Story
+9. Authority
+10. Transformation
+
+Do not repeat hook structures.
+Do not start multiple hooks with the same words.
+Every hook must feel completely different.
+
 Good hooks:
 - Warum 90% aller Hundebesitzer Aggression verschlimmern
 - Der Hundetrainingsfehler, der deinen Hund ungehorsam macht
