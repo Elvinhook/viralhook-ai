@@ -110,9 +110,6 @@ if (profile) {
     loadUserData();
   }, [user]);
   
-    refreshProfileAfterPayment();
-  }, [user]);
-
   const handleAuth = async () => { 
     if (authMode === "signup") { 
      const { data, error } = await supabase.auth.signUp({
