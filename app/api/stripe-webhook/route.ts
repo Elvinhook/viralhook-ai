@@ -27,8 +27,11 @@ export async function POST(req: Request) {
       signature,
       process.env.STRIPE_WEBHOOK_SECRET!
     );
-  } catch {
-    return NextResponse.json({ error: "Webhook error" }, { status: 400 });
+  } catch (error: any) {
+    return NextResponse.json(
+      { error: error.message },
+      { status: 400 }
+    );
   }
 
   if (event.type === "checkout.session.completed") {
