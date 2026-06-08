@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
+import { jsPDF } from "jspdf"; 
 
 export default function Home() {
   const [topic, setTopic] = useState("");
@@ -267,22 +268,47 @@ export default function Home() {
       alert("Download ist nur für Pro-Nutzer verfügbar.");
       return;
     }
-
+  
     if (savedHooks.length === 0) {
       alert("Keine gespeicherten Hooks vorhanden.");
       return;
     }
-
+  
     const text = savedHooks.join("\n\n");
     const blob = new Blob([text], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
-
+  
     a.href = url;
     a.download = "saved-hooks.txt";
     a.click();
-
+  
     URL.revokeObjectURL(url);
+  };
+  
+  const downloadSavedHooksPDF = () => {
+    if (plan !== "pro") {
+      alert("PDF Download ist nur für Pro-Nutzer verfügbar.");
+      return;
+    }
+  
+    if (savedHooks.length === 0) {
+      alert("Keine gespeicherten Hooks vorhanden.");
+      return;
+    }
+  
+    const doc = new jsPDF();
+  
+    doc.text("Saved Hooks", 20, 20);
+  
+    let y = 40;
+  
+    savedHooks.forEach((hook, index) => {
+      doc.text(`${index + 1}. ${hook}`, 20, y);
+      y += 10;
+    });
+  
+    doc.save("saved-hooks.pdf");
   };
 
   const cardStyle = darkMode
