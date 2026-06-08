@@ -637,6 +637,13 @@ export default function Home() {
               </button>
 
               <button
+  onClick={downloadSavedHooksPDF}
+  className="bg-red-500 text-white px-5 py-2 rounded-xl font-semibold"
+>
+  PDF Download
+</button>
+
+              <button
                 onClick={clearAllHooks}
                 className="bg-red-500 text-white px-5 py-2 rounded-xl font-semibold hover:scale-105 transition"
               >
