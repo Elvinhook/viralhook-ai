@@ -263,6 +263,11 @@ export default function Home() {
   };
 
   const downloadSavedHooks = () => {
+    if (plan !== "pro") {
+      alert("Download ist nur für Pro-Nutzer verfügbar.");
+      return;
+    }
+
     if (savedHooks.length === 0) {
       alert("Keine gespeicherten Hooks vorhanden.");
       return;
