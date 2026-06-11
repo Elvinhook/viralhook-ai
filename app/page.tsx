@@ -444,10 +444,12 @@ export default function Home() {
           window.location.href = data.url;
         }
       }}
-      className="bg-white text-black px-5 py-2 rounded-xl font-semibold"
-    >
-      Abo verwalten
-    </button>
+      className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-3 rounded-2xl font-bold shadow-lg hover:scale-105 transition-all duration-200"
+>
+
+  💎 Pro Abo verwalten
+
+</button>
   </>
 ) : (
               
