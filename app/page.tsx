@@ -188,6 +188,16 @@ export default function Home() {
       setHooks(generatedHooks);
       setHookHistory([generatedHooks, ...hookHistory]);
 
+      if (user) {
+  await supabase.from("hook_history").insert([
+    {
+      user_id: user.id,
+      topic: category,
+      hooks: generatedHooks,
+    },
+  ]);
+}
+
       if (plan !== "pro") {
         await supabase.from("usage_logs").insert([
           {
