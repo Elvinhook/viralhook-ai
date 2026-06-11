@@ -24,6 +24,7 @@ export default function Home() {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState<any>(null);
   const [plan, setPlan] = useState("free");
+  const [stripeCustomerId, setStripeCustomerId] = useState("");
   const [authMode, setAuthMode] = useState<"login" | "signup">("login");
 
   const [paymentSuccess, setPaymentSuccess] = useState(false);
@@ -62,12 +63,13 @@ export default function Home() {
 
       const { data: profile } = await supabase
         .from("profiles")
-        .select("plan")
+        .select("plan, stripe_customer_id")
         .eq("id", user.id)
         .maybeSingle();
 
       if (profile?.plan) {
         setPlan(profile.plan);
+        setStripeCustomerId(profile.stripe_customer_id || "");
       }
 
       const { data, error } = await supabase
@@ -419,10 +421,36 @@ export default function Home() {
               </button>
 
               {plan === "pro" ? (
-                <div className="text-green-400 font-bold">
-                  ✅ Pro Mitglied aktiv
-                </div>
-              ) : (
+  <>
+    <div className="text-green-400 font-bold">
+      ✅ Pro Mitglied aktiv
+    </div>
+
+    <button
+      onClick={async () => {
+        const response = await fetch("/api/customer-portal", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            customerId: stripeCustomerId,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (data.url) {
+          window.location.href = data.url;
+        }
+      }}
+      className="bg-white text-black px-5 py-2 rounded-xl font-semibold"
+    >
+      Abo verwalten
+    </button>
+  </>
+) : (
+              
                 <button
                   onClick={async () => {
                     const response = await fetch(
