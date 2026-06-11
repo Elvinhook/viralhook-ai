@@ -188,15 +188,15 @@ export default function Home() {
       setHooks(generatedHooks);
       setHookHistory([generatedHooks, ...hookHistory]);
 
-      if (user) {
-  await supabase.from("hook_history").insert([
-    {
-      user_id: user.id,
-      topic: category,
-      hooks: generatedHooks,
-    },
-  ]);
-}
+      if (plan === "pro") {
+        await supabase.from("hook_history").insert([
+          {
+            user_id: user.id,
+            topic: category,
+            hooks: generatedHooks,
+          },
+        ]);
+      }
 
       if (plan !== "pro") {
         await supabase.from("usage_logs").insert([
@@ -688,7 +688,7 @@ export default function Home() {
         </div>
       </section>
 
-      {hookHistory.length > 0 && (
+      {plan === "pro" && hookHistory.length > 0 && (
         <section className="max-w-4xl mx-auto mt-20">
           <h2 className="text-3xl font-bold mb-6 text-center">
             Hook History 📜
