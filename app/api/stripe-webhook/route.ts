@@ -40,9 +40,12 @@ export async function POST(req: Request) {
 
     if (userId) {
       await supabaseAdmin
-        .from("profiles")
-        .update({ plan: "pro" })
-        .eq("id", userId);
+  .from("profiles")
+  .update({
+    plan: "pro",
+    stripe_customer_id: session.customer as string,
+  })
+  .eq("id", userId);
     }
   }
 
