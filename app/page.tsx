@@ -501,17 +501,16 @@ export default function Home() {
           🚀 Viral Hooks for Creators
         </div>
 
-        <h1 className="text-4xl sm:text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-white via-gray-300 to-gray-600 bg-clip-text text-transparent">
-          Viral Hook AI
-        </h1>
+        <h1 className="text-4xl sm:text-5xl md:text-7xl font-black mb-6">
+  Create Viral Hooks That Stop the Scroll
+</h1>
 
         <p
           className={`text-lg md:text-xl max-w-2xl mx-auto mb-10 ${
             darkMode ? "text-gray-400" : "text-gray-600"
           }`}
         >
-          Generate scroll-stopping hooks for TikTok, Instagram and YouTube in
-          seconds.
+         Generate high-converting hooks for TikTok, Instagram and YouTube — built for creators, coaches and businesses who want more attention.
         </p>
 
         <div
