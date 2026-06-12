@@ -872,6 +872,34 @@ export default function Home() {
     </div>
   </div>
 </section>
+
+<section id="faq" className="max-w-4xl mx-auto mt-24">
+  <h2 className="text-4xl font-bold text-center mb-10">
+    Frequently Asked Questions
+  </h2>
+
+  <div className="space-y-4">
+    <div className="border rounded-3xl p-6">
+      <h3 className="font-bold text-xl mb-2">How many hooks can I generate?</h3>
+      <p className="text-gray-400">Free users can try the generator. Pro users get unlimited hooks.</p>
+    </div>
+
+    <div className="border rounded-3xl p-6">
+      <h3 className="font-bold text-xl mb-2">Can I cancel anytime?</h3>
+      <p className="text-gray-400">Yes. You can manage or cancel your subscription anytime.</p>
+    </div>
+
+    <div className="border rounded-3xl p-6">
+      <h3 className="font-bold text-xl mb-2">Which platforms are supported?</h3>
+      <p className="text-gray-400">TikTok, Instagram and YouTube.</p>
+    </div>
+
+    <div className="border rounded-3xl p-6">
+      <h3 className="font-bold text-xl mb-2">Can I save my hooks?</h3>
+      <p className="text-gray-400">Yes. You can save hooks and download them as TXT or PDF.</p>
+    </div>
+  </div>
+</section>
       
       <footer className="max-w-5xl mx-auto mt-24 border-t border-zinc-800 pt-10 pb-6 text-center text-gray-400">
         <h3 className="text-2xl font-bold mb-3 text-white">
