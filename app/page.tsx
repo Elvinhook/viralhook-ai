@@ -607,37 +607,68 @@ export default function Home() {
 
       {plan !== "pro" && (
   <section id="pricing" className="max-w-5xl mx-auto mt-24 text-center">
-  <h2 className="text-4xl font-bold mb-4">
-    Simple Pricing
-  </h2>
+    <h2 className="text-4xl font-bold mb-4">
+      Simple Pricing
+    </h2>
 
-  <p className="text-gray-400 mb-10">
-    Everything you need to create viral hooks.
-  </p>
-
-  <div className="border rounded-3xl p-8 max-w-md mx-auto">
-    <h3 className="text-3xl font-bold mb-2">
-      Pro 🚀
-    </h3>
-
-    <p className="text-5xl font-black mb-6">
-      €9.99
-      <span className="text-lg font-normal">/month</span>
+    <p className="text-gray-400 mb-10">
+      Start free. Upgrade when you need more power.
     </p>
 
-    <ul className="space-y-3 mb-8 text-left">
-      <li>✅ Unlimited Hooks</li>
-      <li>✅ Save Hooks</li>
-      <li>✅ Hook History</li>
-      <li>✅ PDF Export</li>
-      <li>✅ Future Updates</li>
-    </ul>
-  
-   <button className="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-6 py-3 rounded-xl font-bold">
-      Start Pro
-    </button>
-  </div>
-</section>
+    <div className="grid md:grid-cols-2 gap-6">
+      <div className="border rounded-3xl p-8 text-left">
+        <h3 className="text-2xl font-bold mb-2">Free</h3>
+        <p className="text-4xl font-black mb-6">€0</p>
+
+        <ul className="space-y-3">
+          <li>✅ 5 Generierungen pro Tag</li>
+          <li>✅ 10 Hooks pro Generation</li>
+          <li>✅ Save Hooks</li>
+          <li>❌ Hook History</li>
+          <li>❌ PDF Export</li>
+        </ul>
+      </div>
+
+      <div className="border border-pink-500 rounded-3xl p-8 text-left shadow-2xl">
+        <h3 className="text-2xl font-bold mb-2">Pro 🚀</h3>
+        <p className="text-4xl font-black mb-6">
+          €9.99 <span className="text-lg font-normal">/ month</span>
+        </p>
+
+        <ul className="space-y-3 mb-8">
+          <li>✅ Unlimited Generations</li>
+          <li>✅ 50 Hooks per Generation</li>
+          <li>✅ Hook History</li>
+          <li>✅ PDF Export</li>
+          <li>✅ Customer Portal</li>
+        </ul>
+
+        <button
+          onClick={async () => {
+            const response = await fetch("/api/create-checkout-session", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                userId: user?.id,
+                email: user?.email,
+              }),
+            });
+
+            const data = await response.json();
+
+            if (data.url) {
+              window.location.href = data.url;
+            }
+          }}
+          className="w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white px-6 py-3 rounded-xl font-bold"
+        >
+          Upgrade to Pro 🚀
+        </button>
+      </div>
+    </div>
+  </section>
 )}
 
 {hooks.length > 0 && (
