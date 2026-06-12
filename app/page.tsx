@@ -621,7 +621,7 @@ export default function Home() {
         <p className="text-4xl font-black mb-6">€0</p>
 
         <ul className="space-y-3">
-          <li>✅ 5 Generierungen pro Tag</li>
+          <li>✅ 5 Generations per Day</li>
           <li>✅ 10 Hooks pro Generation</li>
           <li>✅ Save Hooks</li>
           <li>❌ Hook History</li>
