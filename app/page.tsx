@@ -605,7 +605,40 @@ export default function Home() {
         </div>
       </section>
 
-      {hooks.length > 0 && (
+<section id="pricing" className="max-w-5xl mx-auto mt-24 text-center">
+  <h2 className="text-4xl font-bold mb-4">
+    Simple Pricing
+  </h2>
+
+  <p className="text-gray-400 mb-10">
+    Everything you need to create viral hooks.
+  </p>
+
+  <div className="border rounded-3xl p-8 max-w-md mx-auto">
+    <h3 className="text-3xl font-bold mb-2">
+      Pro 🚀
+    </h3>
+
+    <p className="text-5xl font-black mb-6">
+      €9.99
+      <span className="text-lg font-normal">/month</span>
+    </p>
+
+    <ul className="space-y-3 mb-8 text-left">
+      <li>✅ Unlimited Hooks</li>
+      <li>✅ Save Hooks</li>
+      <li>✅ Hook History</li>
+      <li>✅ PDF Export</li>
+      <li>✅ Future Updates</li>
+    </ul>
+
+    <button className="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-6 py-3 rounded-xl font-bold">
+      Start Pro
+    </button>
+  </div>
+</section>
+
+{hooks.length > 0 && (
         <section className="max-w-4xl mx-auto mt-14">
           <h2 className="text-3xl font-bold mb-6 text-center">
             Generated Hooks 🔥
