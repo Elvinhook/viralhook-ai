@@ -502,7 +502,7 @@ export default function Home() {
         </div>
 
         <h1 className="text-4xl sm:text-5xl md:text-7xl font-black mb-6">
-  Create Viral Hooks That Stop the Scroll
+        Go Viral With AI-Powered Hooks
 </h1>
 
         <p
@@ -510,7 +510,7 @@ export default function Home() {
             darkMode ? "text-gray-400" : "text-gray-600"
           }`}
         >
-         Generate high-converting hooks for TikTok, Instagram and YouTube — built for creators, coaches and businesses who want more attention.
+        Generate viral hooks in seconds. Save hours of brainstorming and grow faster on TikTok, Instagram and YouTube.
         </p>
 
         <div
@@ -744,6 +744,46 @@ export default function Home() {
         </section>
       )}
 
+<section className="max-w-5xl mx-auto mt-24">
+  <h2 className="text-3xl font-bold text-center mb-10">
+    Why Creators Love Viral Hook AI
+  </h2>
+
+  <div className="grid md:grid-cols-3 gap-6">
+
+    <div className="border rounded-3xl p-6 text-center">
+      <div className="text-4xl mb-3">⚡</div>
+      <h3 className="font-bold text-xl mb-2">
+        AI Hook Generator
+      </h3>
+      <p>
+        Generate viral hooks in seconds with AI.
+      </p>
+    </div>
+
+    <div className="border rounded-3xl p-6 text-center">
+      <div className="text-4xl mb-3">💾</div>
+      <h3 className="font-bold text-xl mb-2">
+        Save Hooks
+      </h3>
+      <p>
+        Save your best hooks and reuse them later.
+      </p>
+    </div>
+
+    <div className="border rounded-3xl p-6 text-center">
+      <div className="text-4xl mb-3">📜</div>
+      <h3 className="font-bold text-xl mb-2">
+        Hook History
+      </h3>
+      <p>
+        Access previous generations anytime with Pro.
+      </p>
+    </div>
+
+  </div>
+</section>
+      
       <footer className="max-w-5xl mx-auto mt-24 border-t border-zinc-800 pt-10 pb-6 text-center text-gray-400">
         <h3 className="text-2xl font-bold mb-3 text-white">
           Viral Hook AI 🚀
