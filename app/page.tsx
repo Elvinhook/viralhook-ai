@@ -340,6 +340,19 @@ export default function Home() {
       }`}
     >
 
+<nav className="max-w-6xl mx-auto flex justify-between items-center mb-10 px-2">
+  <a href="#" className="font-black text-xl">
+    Viral Hook AI 🚀
+  </a>
+
+  <div className="hidden sm:flex gap-6 text-sm text-gray-400">
+    <a href="#generator" className="hover:text-white">Generator</a>
+    <a href="#features" className="hover:text-white">Features</a>
+    <a href="#pricing" className="hover:text-white">Pricing</a>
+    <a href="#faq" className="hover:text-white">FAQ</a>
+  </div>
+</nav>
+
 {paymentSuccess && (
   <div className="max-w-4xl mx-auto mb-6 bg-green-500/20 border border-green-500 text-green-300 p-4 rounded-2xl text-center font-bold">
     ✅ Zahlung erfolgreich! Dein Pro Account wurde aktiviert.
@@ -496,7 +509,7 @@ export default function Home() {
         </button>
       </div>
 
-      <section className="max-w-5xl mx-auto text-center pt-16">
+      <section id="generator" className="max-w-5xl mx-auto text-center pt-16">
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/10 text-sm mb-6 shadow-lg">
           🚀 Viral Hooks for Creators
         </div>
@@ -744,7 +757,7 @@ export default function Home() {
         </section>
       )}
 
-<section className="max-w-5xl mx-auto mt-24">
+<section id="features" className="max-w-5xl mx-auto mt-24">
   <h2 className="text-3xl font-bold text-center mb-10">
     Why Creators Love Viral Hook AI
   </h2>
