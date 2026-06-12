@@ -783,6 +783,47 @@ export default function Home() {
 
   </div>
 </section>
+
+<section className="max-w-5xl mx-auto mt-24 text-center">
+  <h2 className="text-3xl font-bold mb-4">
+    Built for Creators Who Want More Attention
+  </h2>
+
+  <p className="text-gray-400 max-w-2xl mx-auto mb-10">
+    Viral Hook AI helps you create stronger openings, save your best ideas
+    and turn blank-page moments into scroll-stopping content.
+  </p>
+
+  <div className="grid md:grid-cols-2 gap-6 text-left">
+    <div className="border rounded-3xl p-6">
+      <h3 className="font-bold text-xl mb-2">🚀 Generate Faster</h3>
+      <p className="text-gray-400">
+        Stop wasting hours brainstorming. Get ready-to-use hooks in seconds.
+      </p>
+    </div>
+
+    <div className="border rounded-3xl p-6">
+      <h3 className="font-bold text-xl mb-2">📈 Improve Your Content</h3>
+      <p className="text-gray-400">
+        Create stronger openings that increase curiosity, emotion and watch time.
+      </p>
+    </div>
+
+    <div className="border rounded-3xl p-6">
+      <h3 className="font-bold text-xl mb-2">💾 Save Your Best Ideas</h3>
+      <p className="text-gray-400">
+        Keep your best hooks organized and reuse them whenever you need content.
+      </p>
+    </div>
+
+    <div className="border rounded-3xl p-6">
+      <h3 className="font-bold text-xl mb-2">💎 Upgrade When You Need More</h3>
+      <p className="text-gray-400">
+        Unlock PDF downloads, hook history and more powerful creator features with Pro.
+      </p>
+    </div>
+  </div>
+</section>
       
       <footer className="max-w-5xl mx-auto mt-24 border-t border-zinc-800 pt-10 pb-6 text-center text-gray-400">
         <h3 className="text-2xl font-bold mb-3 text-white">
