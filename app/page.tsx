@@ -605,7 +605,8 @@ export default function Home() {
         </div>
       </section>
 
-<section id="pricing" className="max-w-5xl mx-auto mt-24 text-center">
+      {plan !== "pro" && (
+  <section id="pricing" className="max-w-5xl mx-auto mt-24 text-center">
   <h2 className="text-4xl font-bold mb-4">
     Simple Pricing
   </h2>
@@ -631,12 +632,13 @@ export default function Home() {
       <li>✅ PDF Export</li>
       <li>✅ Future Updates</li>
     </ul>
-
-    <button className="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-6 py-3 rounded-xl font-bold">
+  
+   <button className="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-6 py-3 rounded-xl font-bold">
       Start Pro
     </button>
   </div>
 </section>
+)}
 
 {hooks.length > 0 && (
         <section className="max-w-4xl mx-auto mt-14">
