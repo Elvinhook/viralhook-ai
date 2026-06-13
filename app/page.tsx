@@ -548,6 +548,7 @@ export default function Home() {
               <option>Deutsch</option>
               <option>English</option>
               <option>Türkçe</option>
+              <option>Español</option>
             </select>
 
             <select
@@ -560,6 +561,17 @@ export default function Home() {
               <option>Beauty</option>
               <option>Gaming</option>
               <option>Motivation</option>
+              <option>Finance</option>
+              <option>Crypto</option>
+              <option>AI</option>
+              <option>Marketing</option>
+              <option>E-Commerce</option>
+              <option>Coaching</option>
+              <option>Real Estate</option>
+              <option>Travel</option>
+              <option>Lifestyle</option>
+              <option>Health</option>
+              <option>Personal Branding</option>
             </select>
 
             <select
@@ -572,6 +584,12 @@ export default function Home() {
               <option>Story</option>
               <option>Educational</option>
               <option>Funny</option>
+              <option>Curiosity</option>
+              <option>Fear</option>
+              <option>Shock</option>
+              <option>Authority</option>
+              <option>Aggressive</option>
+              <option>Motivational</option>
             </select>
 
             <select
@@ -579,11 +597,13 @@ export default function Home() {
               onChange={(e) => setHookFilter(e.target.value)}
               className={`rounded-2xl p-4 border ${inputStyle}`}
             >
-              <option>Viral</option>
-              <option>Aggressive</option>
-              <option>Story</option>
-              <option>CTA</option>
-              <option>Emotional</option>
+             <option>Viral</option>
+             <option>Engagement</option>
+             <option>Sales</option>
+             <option>Followers</option>
+             <option>Views</option>
+             <option>Leads</option>
+             <option>Brand Awareness</option> 
             </select>
           </div>
 
