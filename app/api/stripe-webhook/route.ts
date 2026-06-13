@@ -49,5 +49,15 @@ export async function POST(req: Request) {
     }
   }
 
+  if (event.type === "customer.subscription.deleted") {
+    const subscription = event.data.object as Stripe.Subscription;
+    const customerId = subscription.customer as string;
+  
+    await supabaseAdmin
+      .from("profiles")
+      .update({ plan: "free" })
+      .eq("stripe_customer_id", customerId);
+  }
+
   return NextResponse.json({ received: true });
 }
